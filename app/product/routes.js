@@ -1,14 +1,23 @@
 const router = require('express').Router();
+const connection = require('../../config/mysql')
     
 router.get('/', (req, res)=>{
-    const {page, total} = req.query;
-    res.send ({
-        status:'succesfully',
-        message: 'Welcome to My Task',
-        page ,
-        total
-
-    });
+connection.connect();
+connection.query({
+    sql: 'SELECT * FROM pricelist',
+}), (error, result) => {
+    if(error) {
+        res.send({
+            staus: 'failed',
+            response: 'failed to fetch data'
+        });
+    }else {
+        res.send({
+            status: 'success',
+            response: result
+        });
+    }
+}
 });
 
 
